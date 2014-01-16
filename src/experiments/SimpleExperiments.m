@@ -13,6 +13,7 @@ classdef SimpleExperiments < handle
 
 
                 function conf=buildConf(self,user)
+			Logger.info('Loading basic conf')
                         %builds a simple configuration
 			conf=Configuration();
 			conf.user=user;
@@ -46,6 +47,8 @@ classdef SimpleExperiments < handle
 
                 function proc=buildPreprocessor(~,conf)
 
+			Logger.info('Loading preprocessor')
+
 			conf.outputPath=conf.preprocessedDataPath;
 			conf.inputPath=conf.rawDataPath;
 
@@ -78,6 +81,59 @@ classdef SimpleExperiments < handle
 				.setNext(crop).setNext(zeroCenterProcessor).setNext(segmentator);
 
                 end
+
+                function proc=buildProcesssor(~,conf)
+                        %weighting strategy
+                        weightCalculator=LinearWeightCalculator();
+                        %builds the graph given the electrode layout
+                        sampleLen=256;
+                        setCalculator=GraphLiftingSetCalculator(TopologyDefinition(topology(),sampleLen),weightCalculator);
+                        lifter=Lifting(weightCalculator,setCalculator);
+                        %init lifting strcuture to the 6th level
+                        lifter.init(conf.levels);
+
+
+			%for live tests leave the it empty
+			segFil=SegmentFilterProcessor([]);
+			%data readers
+			trainDataReader=SegmentedDataReader(sprintf('%s/user_%i.mat',cnf.inputPath,cnf.user));
+			testDataReader=SegmentedDataReader(sprintf('%s/user_%ie.mat',cnf.inputPath,cnf.user));
+			dataTrain=trainDataReader.get();
+			dataTest=testDataReader.get();
+			dataTrain.merge(dataTest);
+			reader.get=@()dataTrain;
+			dataReader=DataReaderProcessor(reader,reader);
+			dataReader.setNext(segFil);%.setNext(toTrials);%.setNext(flatProcessor).setNext(pcaDim);
+			%dataHolder=DataHolder(dataReader);
+			%processign train	
+			%wAnal.setNext(pk).setNext(flatProcessor).setNext(pcaDim);
+			
+			%classifier
+			rProcessor=SegmentResultWriter(cnf);
+			rProcessor.setNext(NFolderResultProcessor(cnf));
+			%rProcessor.setNext(SegmentResultWriter(cnf));
+			
+			%wAnal.setNext(pk);
+			%evalAdater=MulticlassAdapter(EvaluationAdapter(classifier,[]),[]);
+			classifier=LdaClassifierProvider();
+			proc=CspPatternProcessor(cnf.feats);
+			proc.setNext(NormaliserProcessor());
+			evalAdater=MulticlassAdapter(EvaluationAdapter(classifier,[]),proc,cnf);
+			%classifier=SVMProvider(cnf);
+			%evalAdater=DummyAdapter(EvaluationAdapter(classifier,[]),proc);
+
+			%segAdapter=DummyAdapter(NFoldAdapter(SegmentAdapter(DummyAdapter(MRAAdapter(evalAdater,levels),wAnal),[]),5),dataReader);
+                        
+                        segAdapter=SegmentAdapter();
+                        wAnal=LiftingAnalysis(lifter,conf.levels);
+                        mraAdapater=MRAAdapter(levels);
+                        segAdapter.setNext(wAnal).setNext(mraAdapter).setNext(evalAdapter);
+                        segAdapter.setNext()
+			%job=ResultJob(sprintf('cma eval user %i',cnf.user),segAdapter,rProcessor);
+
+
+                end
+
 
         end
 
