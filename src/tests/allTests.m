@@ -5,6 +5,7 @@ names={
 'ExperimentTest'
 'SegmentAdapterTest'
 'MRAAdapterTest'
+'MulticlassTest'
 };
 for name=1:length(names)
 	all.add(TestSuite.fromName(names{name}));

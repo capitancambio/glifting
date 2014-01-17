@@ -6,10 +6,10 @@ classdef AdderProcessor < PatternProcessor
 
 	methods
 		function [train,test]=doProcess(~,trainData,testData)
-                        train=Result(trainData.X+1,trainData.X+1);
+                        train=Result(trainData.X+1,trainData.Y);
                         test=[];
                         if ~isempty(testData)
-                                test=Result(testData.X+1,testData.X+1);
+                                test=Result(testData.X+1,testData.Y);
                         end
 				
 		end
