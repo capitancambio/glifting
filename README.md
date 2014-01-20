@@ -1,12 +1,28 @@
 glifting
 ========
-
-Matlab implementation of the graph lifting transform as in [Multiresolution analysis over simple graphs for brain computer interfaces](http://iopscience.iop.org/1741-2552/10/4/046014)
-
-In ``src/example.m`` there is an usage example.
+Modular BCI expermiental framework including the matlab implementation of the graph lifting transform as in [Multiresolution analysis over simple graphs for brain computer interfaces](http://iopscience.iop.org/1741-2552/10/4/046014) _note that the code is not the same as in those experiments and therefore some changes in the results are expected_.
 
 
-```matalb
+Intallation
+-----------
+
+ Inside matlab go to the ``src`` folder and run:
+
+ ```matlab
+ install_glifting
+ ```
+
+Examples of usage
+-----------------
+
+In ```src/temp.m``` you have an example of how to invoke a set of experiments. The proper way to create your own experiments would be overwritting the methods of ``src/experiments/JobFactory.m``` in a subclass and redefine the used processors, etc...
+
+
+
+In ``src/example.m`` there is an usage example for the lifting transfrom.
+
+
+```matlab
 
 %weighting strategy
 weightCalculator=LinearWeightCalculator();
