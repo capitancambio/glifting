@@ -2,6 +2,8 @@ all=TestSuite();
 
 %names={ 'DataTestCase','KappaHelper', 'LiftingTest', 'LazyLiftingSetCalculatorTest', 'MRAResultTest', 'MRWaveletAnalysisTest', 'WaveletDataTest', 'WaveletPathHelperTest', , 'ConfigurationTest','FitnessEvaluatorTest','MagicClassTest','CmaExperimentTest' };
 names={ 
+'KappaHelper'
+'DataTestCase'
 'ExperimentTest'
 'SegmentAdapterTest'
 'MRAAdapterTest'

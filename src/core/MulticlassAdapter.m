@@ -3,8 +3,8 @@ classdef MulticlassAdapter < PatternProcessor
 	methods
 		function [trRes,tsRes]=process(self,train,test)
 			classes=1:max(train.Y);
-			tr=cell(classes);
-			ts=cell(classes);
+			tr=cell(1,max(classes));
+			ts=cell(1,max(classes));
 			metaTest=[];
 			%time=cputime;
 			%times=[];
