@@ -67,7 +67,7 @@ classdef SegmentedData < Data
 			Logger.debug('# segments: %i',length(self.segments))
 		end
 
-		function data=deleteSegments(self,idx);
+		function deleteSegments(self,idx)
 			self.segments(idx)=[];	
 			Logger.debug('# segments: %i',length(self.segments))
 		end
@@ -90,7 +90,7 @@ classdef SegmentedData < Data
 		end
 		function toFile(self,path)
 			Logger.info(sprintf('write wavelet data to file %s',path));
-			data=self;	
+			data=self;%#ok	
 			save(FSUtils.checkPath( path ),'data');
 		end
 
