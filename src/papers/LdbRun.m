@@ -1,4 +1,6 @@
 function LdbRun(outputPath,inputPath)
+        %outputpath: a directory where to store the results
+        %inputpath: the pdata directory 
         %create the basic configuration
         cnf=Configuration();
         cnf.outputPath=outputPath;
