@@ -22,14 +22,14 @@ classdef Configuration < MagicClass
 		
 	end
 	methods(Static)
-		function [confs]=buildRange(conf,attrName,range)
+		function [confs]=range(conf,attrName,range)
 			confs=[];
 			for val=range
 				new=conf.clone();
 				s.type='.';
 				s.subs=attrName;
 				new.subsasgn(s,val);
-				confs=[confs,new];
+				confs=[confs,new];%#ok
 			end
 				 
 				
