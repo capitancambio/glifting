@@ -18,15 +18,15 @@ classdef DataJoiner < handle
 		function [datas]=loadDir(self)
 			path=sprintf('%s/%s/',self.cnf.inputPath,self.name);
                         Logger.info('Loading data from %s',path);
-			dirlist=dir(sprintf('%s/*mat',path));
+			dirlist=dir(FSUtils.checkPath(sprintf('%s/*mat',path)));
 			%sort list entries by name, the date format assures that they are in order
 			[~,idx]=sort({dirlist.name});
 			dirlist=dirlist(idx);
 			d2l=length(dirlist)/2;
 			datas=[];
 			for d=1:d2l
-				x=FSUtils.load(sprintf('%s/%s',path,dirlist(d).name));
-				y=FSUtils.load(sprintf('%s/%s',path,dirlist(d+d2l).name));
+				x=FSUtils.load(FSUtils.checkPath(sprintf('%s/%s',path,dirlist(d).name)));
+				y=FSUtils.load(FSUtils.checkPath(sprintf('%s/%s',path,dirlist(d+d2l).name)));
 				data=Data(x.x,y.y);
 				datas=[datas data];%#ok
 
