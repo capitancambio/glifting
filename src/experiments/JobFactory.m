@@ -1,5 +1,8 @@
 classdef JobFactory < handle
-        %SimpleExperiment 
+        %The job defines the skeleton of an experiment, the different methods 
+        %can be overriden by children classes to define specific parts (as the preprocessing or 
+        %procesing)
+        % For the sake of a example here it defines the simple graph experiments for the essex data
         properties
                 inputPath
                 outputFile
