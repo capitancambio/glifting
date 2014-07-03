@@ -28,6 +28,8 @@ classdef ConfigurationUtils
                         %levels of decomposition
 			conf.level=6; %max level
 			conf.levels=2:conf.level;%convinience iterator
+                        %basic result writing control
+                        conf.dontWrite=0;
 
                         %where to store the results (csv format)
 			%conf.prefix=sprintf('experiment_%i',user);		

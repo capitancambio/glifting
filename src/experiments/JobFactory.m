@@ -109,12 +109,8 @@ classdef JobFactory < handle
 			classifier=LdaClassifierProvider(); %TODO: own function
                         experiment.add(EvaluationAdapter(classifier));
 
-
-
-
-                end
-
-                function [experiment]=setUpResults(~,cnf,experiment)
+                        %This marks the end of processing part we gather here the 
+                        %results for their processing
                         %Gather the results to process them together
                         gather=GatherProcessor();
                 
@@ -123,6 +119,13 @@ classdef JobFactory < handle
                         experiment=Experiment();
                         %Gather is the root processor
                         experiment.add(gather);
+
+
+
+
+                end
+
+                function [experiment]=setUpResults(~,cnf,experiment)
 
                         %compute majority voting of the gathered results
                         experiment.add(MajorityVotingResultProcessor(cnf));

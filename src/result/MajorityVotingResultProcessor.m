@@ -13,16 +13,16 @@ classdef MajorityVotingResultProcessor< PatternProcessor
 			self.cnf=cnf;
 
 		end
-		function [train,test]=doProcess(self,train,test)
+		function [votedTrain,votedTest]=doProcess(self,train,test)
                         result=JoinedResult(train,test);
 			self.segs=result(1).train.size;
 			self.levels=max(self.cnf.levels);
                         self.map=MatrixResultMap(result,self.segs,self.cnf.levels);
                         self.map.populate();
                         
-                        self.all();
-
-				
+                        [trKappa,trAcc,tsKappa,tsAcc]=self.all();
+                        votedTrain=VotedResult(trKappa,trAcc);
+                        votedTest=VotedResult(tsKappa,tsAcc);
 		end
 
 		function [kappa,acc,testKappa,testAcc]=all(self)
@@ -35,10 +35,9 @@ classdef MajorityVotingResultProcessor< PatternProcessor
                         testKappa=mean(testKappas);
                         testAcc=mean(testAccs);
 			Logger.info('all,%i,%f, %f,%f,%f\n',self.cnf.user,mean(acc),kappa,testAcc,testKappa);
-			if isfield(self.cnf,'dontWrite')
+			if self.cnf.dontWrite==1
 				%do nothing
 			else
-
 				agg=ResultLineAggregator(self.cnf.resAggPath);
 				agg.addLine(sprintf('%i,%s,%f,%f,%f,%f',self.cnf.user,self.cnf.prefix,acc,kappa,testAcc,testKappa));
 				agg.close();
